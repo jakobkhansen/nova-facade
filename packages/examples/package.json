@@ -24,10 +24,12 @@
     "graphql": "^15.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "relay-runtime": "^17.0.0",
     "react-relay": "^17.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
+    "@types/relay-runtime": "^17.0.0",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.0",
