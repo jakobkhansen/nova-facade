@@ -15,14 +15,30 @@ import type { FeedbackStoryQuery } from "./__generated__/FeedbackStoryQuery.grap
 import { getSchema } from "../../testing-utils/getSchema";
 import * as React from "react";
 import type { events } from "../../events/events";
+import { MockPayloadGenerator as RelayMockPayloadGenerator } from "relay-test-utils";
 
 const schema = getSchema();
 
 const MockPayloadGenerator = new PayloadGenerator(schema);
 
+const novaDecoratorWithRelayGenerator = getNovaDecorator(schema, {
+  generateFunction: (operation, mockResolvers) => {
+    const result = RelayMockPayloadGenerator.generate(
+      operation,
+      mockResolvers,
+      {
+        mockClientData: true,
+      },
+    );
+
+    return result;
+  },
+});
+
 const meta = {
   component: FeedbackComponent,
   decorators: [getNovaDecorator(schema)],
+  // decorators: [novaDecoratorWithRelayGenerator],
   parameters: {
     novaEnvironment: {
       query: graphql`
@@ -30,11 +46,15 @@ const meta = {
           feedback(id: $id) {
             ...Feedback_feedbackFragment
           }
+          viewData {
+            ...Feedback_viewDataFragment
+          }
         }
       `,
       variables: { id: "42" },
       referenceEntries: {
         feedback: (data) => data?.feedback,
+        viewData: (data) => data?.viewData,
       },
     },
   } satisfies WithNovaEnvironment<FeedbackStoryQuery, TypeMap>,
@@ -50,6 +70,9 @@ export const Primary: Story = {
     novaEnvironment: {
       resolvers: {
         Feedback: () => sampleFeedback,
+        ViewData: () => ({
+          viewDataField: "ViewData mock data!",
+        }),
       },
     },
   } satisfies WithNovaEnvironment<FeedbackStoryQuery, TypeMap>,

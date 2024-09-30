@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<25ffc163fef147c94d952bb9a33226e3>>
+ * @generated SignedSource<<8e7cdd599fcd08ccb67a54d6aa00f5a8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,9 @@ export type FeedbackStoryQuery$data = {
   readonly feedback: {
     readonly " $fragmentSpreads": FragmentRefs<"Feedback_feedbackFragment">;
   };
+  readonly viewData: {
+    readonly " $fragmentSpreads": FragmentRefs<"Feedback_viewDataFragment">;
+  } | null | undefined;
 };
 export type FeedbackStoryQuery = {
   response: FeedbackStoryQuery$data;
@@ -60,6 +63,27 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "kind": "ClientExtension",
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ViewData",
+            "kind": "LinkedField",
+            "name": "viewData",
+            "plural": false,
+            "selections": [
+              {
+                "args": null,
+                "kind": "FragmentSpread",
+                "name": "Feedback_viewDataFragment"
+              }
+            ],
+            "storageKey": null
+          }
+        ]
       }
     ],
     "type": "Query",
@@ -113,6 +137,29 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "kind": "ClientExtension",
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ViewData",
+            "kind": "LinkedField",
+            "name": "viewData",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "viewDataField",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ]
       }
     ]
   },
@@ -150,6 +197,18 @@ return {
           "nullable": false,
           "plural": false,
           "type": "String"
+        },
+        "viewData": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ViewData"
+        },
+        "viewData.viewDataField": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "String"
         }
       }
     },
@@ -160,6 +219,6 @@ return {
 };
 })();
 
-(node as any).hash = "1606a3603109bd11d1a32f065495d923";
+(node as any).hash = "f2b52ccc523ed6e01e401325ed18a5d1";
 
 export default node;

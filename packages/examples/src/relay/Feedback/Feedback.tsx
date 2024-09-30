@@ -2,6 +2,7 @@ import { graphql, useFragment, useMutation } from "@nova/react";
 import * as React from "react";
 import type { FeedbackComponent_LikeMutation } from "./__generated__/FeedbackComponent_LikeMutation.graphql";
 import type { Feedback_feedbackFragment$key } from "./__generated__/Feedback_feedbackFragment.graphql";
+import { Feedback_viewDataFragment$key } from "./__generated__/Feedback_viewDataFragment.graphql";
 import {
   useOnDeleteFeedback,
   useFeedbackTelemetry,
@@ -9,6 +10,7 @@ import {
 
 type Props = {
   feedback: Feedback_feedbackFragment$key;
+  viewData: Feedback_viewDataFragment$key;
 };
 
 export const Feedback_feedbackFragment = graphql`
@@ -21,9 +23,17 @@ export const Feedback_feedbackFragment = graphql`
   }
 `;
 
+export const Feedback_viewDataFragment = graphql`
+  fragment Feedback_viewDataFragment on ViewData {
+    viewDataField
+  }
+`;
+
 export const FeedbackComponent = (props: Props) => {
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const feedback = useFragment(Feedback_feedbackFragment, props.feedback);
+  const viewData = useFragment(Feedback_viewDataFragment, props.viewData);
+
   const [like, isPending] = useMutation<FeedbackComponent_LikeMutation>(
     graphql`
       mutation FeedbackComponent_LikeMutation($input: FeedbackLikeInput!) {
@@ -63,6 +73,8 @@ export const FeedbackComponent = (props: Props) => {
         <div style={{ color: "red" }}>{errorMessage}</div>
       )}
       Feedback: {feedback.message.text}
+      <br />
+      ViewData: {viewData.viewDataField}
       <button
         id="likeButton"
         disabled={isPending}

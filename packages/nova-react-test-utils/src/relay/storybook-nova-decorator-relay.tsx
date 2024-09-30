@@ -36,7 +36,10 @@ export const getNovaRelayDecorator: (
       generateFunction ??
       relayMockPayloadGenerator.generate.bind(relayMockPayloadGenerator);
     environment.graphql.mock.queueOperationResolver((operation) => {
+      console.log("operation", operation);
       const payload = generate(operation, mockResolvers);
+
+      console.log("generated mock data", payload);
       return payload;
     });
   };
