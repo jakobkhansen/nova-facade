@@ -1,6 +1,10 @@
 import * as React from "react";
 import type { NovaMockEnvironment } from "../shared/nova-mock-environment";
-import { type GraphQLSchema, parse as parseGraphQL } from "graphql";
+import {
+  type GraphQLSchema,
+  parse as parseGraphQL,
+  printSchema as printGraphQL,
+} from "graphql";
 import {
   type MockResolvers,
   generate as payloadGenerator,
@@ -9,6 +13,8 @@ import type { OperationDescriptor as RelayOperationDescriptor } from "relay-runt
 import { novaGraphql } from "./nova-relay-graphql";
 import { createMockEnvironment } from "relay-test-utils";
 import { RelayEnvironmentProvider } from "react-relay";
+import { print } from "relay-compiler/lib/core/IRPrinter";
+import { create } from "relay-compiler/lib/core/Schema";
 
 export class RelayMockPayloadGenerator {
   public gqlSchema: GraphQLSchema;
@@ -25,6 +31,11 @@ export class RelayMockPayloadGenerator {
     if (!operation.request.node.params.text) {
       throw new Error("Expected operation descriptor to have operation text");
     }
+    console.log("operation", operation);
+    const schemaForCompiler = create(printGraphQL(this.gqlSchema));
+    console.log(
+      print(schemaForCompiler, { ...operation.root.node, kind: "Root" }),
+    );
     const { data } = payloadGenerator(
       {
         schema: this.gqlSchema,
